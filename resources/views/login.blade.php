@@ -121,19 +121,26 @@ body {
         <div class="text-center mt-4 name">
             Pain Tracker
         </div>
-        <form class="p-3 mt-3">
+        <form class="p-3 mt-3" method="post" action="">
+            @csrf
             <div class="form-field d-flex align-items-center">
                 <span class="far fa-user"></span>
-                <input type="text" name="userName" id="userName" placeholder="Email">
+                <input type="text" name="email" id="email" placeholder="Email">
             </div>
             <div class="form-field d-flex align-items-center">
                 <span class="fas fa-key"></span>
                 <input type="password" name="password" id="pwd" placeholder="Contraseña">
             </div>
             <button class="btn mt-3">Ingresar</button>
+
+            @error('message')
+            <div class="text-center fs-6 mt-1">
+                Error
+            </div>
+            @enderror
         </form>
         <div class="text-center fs-6">
-            <!-- <a href="#">Forget password?</a> or <a href="#">Sign up</a> -->
+        ¿Sin cuenta? <a href="{{ route('register.index') }}">Regístrate</a> <!--or  <a href="#">Sign up</a>  -->
         </div>
     </div>
 </body>

@@ -7,7 +7,11 @@ use Illuminate\Http\Request;
 class HomeController extends Controller
 {
     public function index(){
-        return view('inicio');
+        return redirect()->route('login.index');
+    }
+
+    public function home(){
+        return view('home');
     }
 
     public function about(){
