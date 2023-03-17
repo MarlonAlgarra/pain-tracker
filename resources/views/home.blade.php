@@ -3,7 +3,7 @@
 @section('title','Pain Tracker')
 
 @section('styles')
-<link rel="stylesheet" href="{{ asset('public/css/mainMenu.css') }}">
+<link rel="stylesheet" href="{{ asset('css/mainMenu.css') }}">
 @endsection
 
 @section('content')
