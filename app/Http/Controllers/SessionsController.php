@@ -17,7 +17,7 @@ class SessionsController extends Controller
                 'message' => 'Correo o contraseña incorrectas'
             ]);
         }
-        return redirect()->route('about');
+        return redirect()->route('home');
     }
 
     public function destroy(){
