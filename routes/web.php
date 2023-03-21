@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ListController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SessionsController;
+use App\Http\Controllers\RegistrosController;
 
 
 Route::get('/',[HomeController::class,'index'])->name('index');
@@ -19,6 +20,8 @@ Route::get('/logout', [SessionsController::class, 'destroy'])->middleware('auth'
 
 Route::get('/home',[HomeController::class,'home'])->middleware('auth')->name('home');
 Route::get('/about',[HomeController::class,'about'])->name('about');
+
+Route::post('/registro', [RegistrosController::class, 'store'])->name('registros.store');
 // Route::get('/contact', [HomeController::class,'contact'])->name('contact');
 
 // Route::resource('Lists',ListController::class);

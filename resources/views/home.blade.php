@@ -25,6 +25,22 @@
         -ms-transform: translate(-50%, -50%);
         transform: translate(-50%, -50%);
     }
+
+    .formCheck:checked{
+      background-color: red;
+      border-color: #cb4154;
+    }
+    .custom-range::-webkit-slider-thumb {
+      background: red;
+    }
+
+    .custom-range::-moz-range-thumb {
+      background: red;
+    }
+
+    .custom-range::-ms-thumb {
+      background: red;
+    }
 </style>
 
 <div class="mainHeader">
@@ -95,53 +111,53 @@
         <div class="card-body">
           <h5 class="card-title">Nuevo Registro</h5>
           <form>
-
+            @csrf
             <div class="form-group">
               <label>¿Presentó dolor?  </label><br>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="dolorIsPresent" id="inlineRadio1" value="si">
+                <input class="form-check-input formCheck" type="radio" name="dolorIsPresent" id="inlineRadio1" value="si">
                 <label class="form-check-label" for="inlineRadio1">Si</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="dolorIsPresent" id="inlineRadio2" value="no" checked>
+                <input class="form-check-input formCheck" type="radio" name="dolorIsPresent" id="inlineRadio2" value="no" checked>
                 <label class="form-check-label" for="inlineRadio2">No</label>
               </div>
             </div>
 
             <div class="form-group dolorLevel" style="display:none;margin-top:5%;">
-              <label>Nivel de dolor</label>
-              <input type="range" class="form-range" min="0" max="10" step="1" id="customRange3">
+              <label>Nivel de dolor: <strong id="painNumber"></strong></label>
+              <input type="range" class="form-range custom-range" value="0" min="0" max="10" step="1" id="painRange">
             </div>
 
             <div class="form-group" style="margin-top:5%;">
               <label>¿Tomó medicamentos?  </label><br>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="medicamentos" value="si">
+                <input class="form-check-input formCheck" type="radio" name="medicamentos" value="si">
                 <label class="form-check-label" for="inlineRadio1">Si</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="medicamentos" value="no" checked>
+                <input class="form-check-input formCheck" type="radio" name="medicamentos" value="no" checked>
                 <label class="form-check-label" for="inlineRadio2">No</label>
               </div>
             </div>
 
             <div class="form-group medicamento" style="display:none;margin-top:5%;">
-              <label for="exampleInputPassword1">Medicamento</label>
-              <input type="text" class="form-control" id="exampleInputPassword1" placeholder="Nombre medicamento">
+              <label for="">Medicamento</label>
+              <input type="text" class="form-control" id="medicineName" placeholder="Nombre medicamento" required>
             </div>
             <div class="form-group" style="margin-top:5%;">
               <label>Menstruación  </label><br>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="menstruacion" value="si">
+                <input class="form-check-input formCheck" type="radio" name="menstruacion" value="si">
                 <label class="form-check-label" for="inlineRadio1">Si</label>
               </div>
               <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" name="menstruacion" value="no" checked>
+                <input class="form-check-input formCheck" type="radio" name="menstruacion" value="no" checked>
                 <label class="form-check-label" for="inlineRadio2">No</label>
               </div>
             </div>
             <div style="margin-top:5%;">
-              <button type="submit" class="btn btn-primary" style="width:100%">Guardar</button>
+              <button id="saveRegister" class="btn btn-danger" style="width:100%; background-color:red;">Guardar</button>
             </div>
             
           </form>
@@ -223,15 +239,19 @@
     $('.formulario').toggle();
     $('.line1').toggleClass('move')
     $('.line2').toggleClass('mov')
-    console.log('Working')
   })
 
   $("input[name$='dolorIsPresent']").click(function() {
         var test = $(this).val();
         if(test=='si'){
           $(".dolorLevel").show();
+          $('#painNumber').text(1)
+          $("#painRange").prop('min',1); 
         }else{
           $(".dolorLevel").hide();
+          $("#painRange").prop('min',0); 
+          $("#painRange").val() = 0;
+          $('#painNumber').text(0)
         }
   });
 
@@ -244,5 +264,45 @@
         }
   });
 
+  $("#painRange").on('change',function(){
+    $('#painNumber').text(' '+$(this).val())
+  });
+
+  $("#saveRegister").click(function(e){
+    e.preventDefault();
+    if($("#medicineName").val() == '' && $("input[name$='medicamentos']:checked").val()=='si'){
+      alert('Ingrese un nombre en los medicamentos')
+    }else{
+      $(this).prop( "disabled", true ).text('Guardando...')
+      formData = {
+      '_token':$("input[name$='_token']").val(),
+      'pain': $("input[name$='dolorIsPresent']:checked").val(),
+      'painLevel': $("#painRange").val(),
+      'medicine':$("input[name$='medicamentos']:checked").val(),
+      'medicineName': $("#medicineName").val(),
+      'menstruation':$("input[name$='menstruacion']:checked").val()
+      }
+      $.ajax({
+          url: "{{ route('registros.store') }}",
+          type: "post",
+          data: formData,
+          success: function(d) {
+            $('.circle').click();
+            iziToast.show({
+              theme: 'dark',
+              icon: 'bi-journal-album',
+              title: 'Registro Agregado',
+              message: '',
+              position: 'center'
+            });
+            $('#saveRegister').prop( "disabled", false ).text('Guardar')
+          },
+          // error: function(xhr, ){
+          //   $(this).prop( "disabled", false ).text('Guardar')
+          // }
+      });
+    }
+    
+  })
 </script>
 @endsection
