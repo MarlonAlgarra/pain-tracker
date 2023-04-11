@@ -42,7 +42,7 @@
         <i class="bi-person-fill"></i>
       </a>
       <div class="nav-items items2">
-        <i class="bi-journal-album"></i>
+        <a href="{{ route('list') }}"><i class="bi-journal-album"></i></a>
       </div>
       <div class="nav-items items3">
         <i class="bi-heart-pulse"></i>
