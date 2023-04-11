@@ -7,47 +7,7 @@
 @endsection
 
 @section('content')
-<style>
-    .mainHeader{
-        top: 0%;
-        width: 100%;
-        height: 70px;
-        background-color:white;
-        position: fixed;
-        text-align: center;
-    }
 
-    .center {
-        margin: 0;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-    }
-
-    .formCheck:checked{
-      background-color: red;
-      border-color: #cb4154;
-    }
-    .custom-range::-webkit-slider-thumb {
-      background: red;
-    }
-
-    .custom-range::-moz-range-thumb {
-      background: red;
-    }
-
-    .custom-range::-ms-thumb {
-      background: red;
-    }
-</style>
-
-<div class="mainHeader">
-    <div class="center">
-        <h2 style="font-family: Raleway">Pain Tracker <i class="bi bi-hospital-fill" style="color:red"></i></h2>
-    </div>
-</div>
 
   <div class="wrapper">
       <div class="item menu">

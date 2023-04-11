@@ -19,6 +19,7 @@ Route::get('/logout', [SessionsController::class, 'destroy'])->middleware('auth'
 
 
 Route::get('/home',[HomeController::class,'home'])->middleware('auth')->name('home');
+Route::get('/list',[HomeController::class,'list'])->middleware('auth')->name('list');
 Route::get('/about',[HomeController::class,'about'])->name('about');
 
 Route::post('/registro', [RegistrosController::class, 'store'])->name('registros.store');
